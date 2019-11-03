@@ -1,11 +1,7 @@
 package com.mxz.common;
 
-import sun.security.jca.GetInstance;
-
 import java.io.File;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @Description 文件容器
@@ -15,13 +11,11 @@ import java.util.Set;
 public class FileContainer {
     private static FileContainer fileContainer;
     private LinkedList<String> files ;
-    private Set<String> fileFormat ;
     static {
         fileContainer = new FileContainer();
     }
     private FileContainer() {
-        files = new LinkedList<>();
-        fileFormat = new HashSet<String>();
+        files = new LinkedList<String>();
     }
 
     public static FileContainer getInstance() {
@@ -32,16 +26,17 @@ public class FileContainer {
      * 读取所有文件路径
      * @param path
      */
-    public void handleFilePath(String path) {
+    public void handleFilePath(String path, String suffix) {
         File file = new File(path);
         for (File file1 : file.listFiles()) {
-            String fileSuffix = FileUtils.getFileSuffix(file1.toString());
-            if (file1.isFile() && (!fileFormat.isEmpty() || fileFormat.contains(fileSuffix)))
+            //file1.getName().matches(".*\\.c$");
+            if (file1.isFile() && (suffix.contains(FileUtils.getFileSuffix(file1.getName()))))
                 files.add(file1.toString());
             if (file1.isDirectory())
-                handleFilePath(file1.toString());
+                handleFilePath(file1.toString(), suffix);
         }
     }
+
 
     public synchronized String getFile() {
         return files.size() == 0 ? null : files.removeLast();

@@ -1,5 +1,7 @@
 package com.mxz;
 
+import com.mxz.common.PrintUtils;
+
 /**
  * @Description  汇总统计
  * @Date 2019/11/2 12:09
@@ -10,6 +12,7 @@ public class GatherCodes {
     private volatile int emptyCount= 0;              //空行数
     private volatile int effectiveCount =0;          //有效行数
     private volatile int commentCount = 0;           //注释行数
+    private int fileCount = 0;           //注释行数
     private static GatherCodes gatherCodes;
     private GatherCodes() {
     }
@@ -20,22 +23,33 @@ public class GatherCodes {
         return gatherCodes;
     }
     public GatherCodes addTotalCount(int totalCount) {
-        this.totalCount = totalCount;
+        this.totalCount += totalCount;
         return this;
     }
 
     public GatherCodes addEmptyCount(int emptyCount) {
-        this.emptyCount = emptyCount;
+        this.emptyCount += emptyCount;
         return this;
     }
 
     public GatherCodes addEffectiveCount(int effectiveCount) {
-        this.effectiveCount = effectiveCount;
+        this.effectiveCount += effectiveCount;
         return this;
     }
 
     public GatherCodes addCommentCount(int commentCount) {
-        this.commentCount = commentCount;
+        this.commentCount += commentCount;
         return this;
+    }
+
+    public void setFileCount(int fileCount) {
+        this.fileCount = fileCount;
+    }
+
+    public void print(){
+        PrintUtils.printLine();
+        PrintUtils.printVar("Files", "Lines", "Code", "Comments", "Blanks");
+        PrintUtils.printLine();
+        PrintUtils.printVar(fileCount, totalCount, effectiveCount, commentCount, emptyCount);
     }
 }

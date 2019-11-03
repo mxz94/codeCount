@@ -1,0 +1,1 @@
+java -jar codeCount.jar %1 %2;
